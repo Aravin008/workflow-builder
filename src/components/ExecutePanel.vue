@@ -30,7 +30,6 @@ function runWorkflow() {
   // Done
   running.value = false
 
- 
 }
 
   function clearLogs() {
