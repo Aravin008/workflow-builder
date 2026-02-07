@@ -1,4 +1,4 @@
-export type TypeNode = 'start' | 'transform' | 'condition' | 'end';
+export type TypeNode = 'start' | 'transform' | 'condition' | 'end' | 'error';
 
 export type TypeTransformOp = 
   | 'uppercase'
