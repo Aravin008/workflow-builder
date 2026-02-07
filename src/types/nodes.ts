@@ -1,3 +1,5 @@
+import { Edge, Node } from "@vue-flow/core";
+
 export type TypeNode = 'start' | 'transform' | 'condition' | 'end' | 'error';
 
 export type TypeTransformOp = 
@@ -40,3 +42,12 @@ export type EndNode = {
 }
 
 export type NodeType = StartNode | TransformNode | ConditionNode | EndNode
+
+export interface FlowExport {
+  version: string
+  nodes: Node[]
+  edges: Edge[]
+  meta?: {
+    createdAt: string
+  }
+}

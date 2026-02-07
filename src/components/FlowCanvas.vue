@@ -8,17 +8,18 @@ import EndNode from '@/components/customNodes/EndNode.vue'
 import ConditionNode from '@/components/customNodes/ConditionNode.vue'
 import TransformNode from '@/components/customNodes/TransformNode.vue'
 import { useAlertStore } from '@/stores/alertStore'
+import { markRaw } from 'vue'
 
 
 const flow = useFlowStore()
 const { addEdges, project } = useVueFlow()
 const alert = useAlertStore()
-const nodeTypes = {
+const nodeTypes = markRaw({
   condition: ConditionNode,
   start: StartNode,
   end: EndNode,
   transform: TransformNode
-}
+})
 function onConnect(connection: Connection) {
   const sourceNode = flow.nodes.find(n => n.id === connection.source)
   const targetNode = flow.nodes.find(n => n.id === connection.target)
