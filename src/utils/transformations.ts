@@ -1,14 +1,16 @@
+import { useAlertStore } from "@/stores/alertStore"
 import { LogEntry, WorkflowGraph } from "@/types/workflow"
 
 export function runWorkflow(graph: WorkflowGraph): { logs: LogEntry[], errors: string[] } {
   const logs: LogEntry[] = []
   const errors: string[] = []
-
+  const alert = useAlertStore()
   const { nodes, edges } = graph
 
   // Find Start node
   const startNode = nodes.find(n => n.data.type === 'start')
   if (!startNode) {
+    alert.show("No Start node Found")
     errors.push('No Start node found')
     return { logs, errors }
   }
