@@ -3,8 +3,8 @@ import { Handle, Position } from '@vue-flow/core'
 </script>
 
 <template>
-  <div class="bg-yellow-100 border rounded p-2 text-xs min-w-37.5">
-    <div class="text-center">Condition</div>
+  <div class="bg-yellow-100 border rounded p-2 min-w-37.5">
+    <div class="text-center"><strong>Condition</strong></div>
 
     <!-- Incoming -->
     <Handle

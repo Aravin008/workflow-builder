@@ -1,17 +1,39 @@
 <script setup lang="ts">
-import { useVueFlow, VueFlow } from '@vue-flow/core'
+import { useVueFlow, VueFlow, MarkerType } from '@vue-flow/core'
 import { useFlowStore } from '@/stores/flowStore'
 import type { Connection } from '@vue-flow/core'
 import { Edge } from '@/types/workflow'
-import ConditionNode from './customNodes/conditionNode.vue'
+import StartNode from '@/components/customNodes/StartNode.vue'
+import EndNode from '@/components/customNodes/EndNode.vue'
+import ConditionNode from '@/components/customNodes/ConditionNode.vue'
+import TransformNode from '@/components/customNodes/TransformNode.vue'
+import { useAlertStore } from '@/stores/alertStore'
+
 
 const flow = useFlowStore()
 const { addEdges, project } = useVueFlow()
+const alert = useAlertStore()
 const nodeTypes = {
   condition: ConditionNode,
+  start: StartNode,
+  end: EndNode,
+  transform: TransformNode
 }
 function onConnect(connection: Connection) {
   const sourceNode = flow.nodes.find(n => n.id === connection.source)
+  const targetNode = flow.nodes.find(n => n.id === connection.target)
+
+  if (!sourceNode || !targetNode) return
+
+  if (targetNode.data.type === 'start') {
+    alert.show('Start node cannot have incoming connections')
+    return
+  }
+
+  if (sourceNode.data.type === 'end') {
+    alert.show('End node cannot have outgoing connections')
+    return
+  }
 
   // Build edge object
   const edge: Edge = {
@@ -77,5 +99,10 @@ function onDrop(event: DragEvent) {
     @edge-click="onEdgeClick"
     @dragover="onDragOver"
     @drop="onDrop"
+    :default-edge-options="{
+      markerEnd: {
+        type: MarkerType.ArrowClosed
+      }
+    }"
   />
 </template>
