@@ -13,7 +13,7 @@ function onDragStart(event: DragEvent, type: string) {
 
 <template>
   <div class="h-screen flex flex-col border-r justify-between">
-    <div class="w-50 p-4 space-y-2">
+    <div class="p-4 space-y-2">
       <h2 class="font-bold text-center">Nodes</h2>
 
       <div class="border p-2 cursor-pointer text-center rounded"
@@ -50,7 +50,7 @@ function onDragStart(event: DragEvent, type: string) {
     </div>
     <div class="py-2 px-4 space-y-2">
       <div class="w-50">
-        <div class="border p-2 bg-red-800 text-white rounded cursor-pointer text-center"
+        <div class="border p-2 bg-red-800 text-white rounded cursor-pointer text-center font-bold"
           @click="flow.clearCanvas()">
           Clear Canvas
         </div>
