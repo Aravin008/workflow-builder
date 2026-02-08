@@ -28,7 +28,7 @@ A highly interactive, node-based workflow automation tool built with **Vue 3**, 
 Clone the repository and install the dependencies:
 ```bash
 git clone git@github.com:Aravin008/workflow-builder.git
-cd workflow
+cd workflow-builder
 npm install
 ```
 
