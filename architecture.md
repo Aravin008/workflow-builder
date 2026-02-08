@@ -65,6 +65,33 @@ Using Pinia as a **single source of truth**:
 
 ---
 
+## Undo / Redo Architecture
+
+Undo and redo functionality is implemented at the **state layer** using a snapshot-based history model.
+
+### Design
+- Structural changes to the workflow graph (node/edge add, delete, clear) push snapshots into a bounded undo stack
+- Each snapshot contains a deep-cloned copy of:
+  - Nodes
+  - Edges
+- History is capped at a fixed size (last 10 states) to prevent memory growth
+
+### Behavior
+- Undo restores the previous graph snapshot
+- Redo reapplies a reverted snapshot
+- Performing a new action clears the redo stack to maintain consistency
+
+### Scope
+Undo/redo is intentionally limited to **structural graph mutations**.
+Fine-grained form edits (e.g., typing in node editors) are excluded to:
+- Avoid noisy history states
+- Preserve predictable UX
+- Reduce unnecessary state churn
+
+This approach balances usability with implementation simplicity while covering the most impactful user actions.
+
+---
+
 ## Core Domain Model
 
 The workflow system is modeled using strongly typed domain entities defined in:
