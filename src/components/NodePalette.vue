@@ -50,8 +50,8 @@ function onDragStart(event: DragEvent, type: string) {
     </div>
     <div class="py-2 px-4 space-y-2">
       <div class="flex justify-between space-y-2">
-        <button class="border rounded min-w-24 h-10 bg-green-600 text-white disabled:bg-gray-400 cursor-pointer disabled:cursor-not-allowed" @click="flow.undo" :disabled="!flow.canUndo">Undo</button>
-        <button class="border rounded min-w-24 h-10 bg-green-600 text-white disabled:bg-gray-400 cursor-pointer disabled:cursor-not-allowed" @click="flow.redo" :disabled="!flow.canRedo">Redo</button>
+        <button class="border rounded min-w-24 h-10 bg-blue-800 text-white disabled:bg-gray-600 cursor-pointer disabled:cursor-not-allowed" @click="flow.undo" :disabled="!flow.canUndo">Undo</button>
+        <button class="border rounded min-w-24 h-10 bg-blue-800 text-white disabled:bg-gray-600 cursor-pointer disabled:cursor-not-allowed" @click="flow.redo" :disabled="!flow.canRedo">Redo</button>
       </div>
       <div class="w-50">
         <div class="border p-2 bg-red-800 text-white rounded cursor-pointer text-center font-bold"
