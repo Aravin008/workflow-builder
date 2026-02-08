@@ -2,7 +2,7 @@ import { NodeType } from "./nodes"
 
 export type GraphNode = {
   id: string
-  data: NodeType
+  data?: NodeType
 }
 
 export type Edge = {
@@ -22,6 +22,6 @@ export type WorkflowGraph = {
 
 export type LogEntry = {
   nodeId: string
-  type: NodeType['type']
-  payload?: any
+  type: 'start' | 'transform' | 'condition' | 'end' | 'error'
+  payload: any
 }

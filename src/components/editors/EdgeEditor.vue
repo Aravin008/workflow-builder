@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Edge } from '@vue-flow/core'
+import { Edge } from '@/types/workflow';
 
 defineProps<{
   edge: Edge

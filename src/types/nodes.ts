@@ -51,9 +51,3 @@ export interface FlowExport {
     createdAt: string
   }
 }
-
-export type LogEntry = {
-  nodeId: string
-  type: 'start' | 'transform' | 'condition' | 'end' | 'error'
-  payload: any
-}
