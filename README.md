@@ -4,6 +4,8 @@ A highly interactive, node-based workflow automation tool built with **Vue 3**, 
 
 **🔗 [Live Demo Hosted on GitHub Pages](https://aravin008.github.io/workflow-builder/)**
 
+**🔗 [Architecture](https://github.com/Aravin008/workflow-builder/blob/main/architecture.md)**
+
 ---
 
 ## Tech Stack

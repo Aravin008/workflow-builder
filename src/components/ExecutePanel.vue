@@ -2,7 +2,7 @@
   import { ref } from 'vue'
   import { useFlowStore } from '@/stores/flowStore'
   import type { LogEntry } from '@/types/workflow'
-  import { runWorkflow as flowEngine } from '@/utils/transformations'
+  import { runWorkflow as flowEngine } from '@/engine/flowEngine'
 
   // Use store
   const flow = useFlowStore()
@@ -63,14 +63,14 @@
     <h2 class="font-bold text-xl text-center p-2 pt-0">Execution Panel</h2>
     <div class="flex space-x-2 justify-center">
       <button
-      class="bg-blue-600 text-white px-4 py-2 min-w-32 rounded hover:bg-blue-700 mb-4 font-semibold text-sm"
+      class="bg-blue-600 text-white px-4 cursor-pointer py-2 min-w-32 rounded hover:bg-blue-700 mb-4 font-semibold text-sm"
       @click="runWorkflow"
       :disabled="running"
     >
       {{ running ? 'Running...' : 'Play' }}
     </button>
     <button
-      class="bg-gray-600 text-white px-4 py-2 min-w-32 rounded hover:bg-gray-700 mb-4 font-semibold text-sm"
+      class="bg-gray-600 text-white px-4 py-2 cursor-pointer min-w-32 rounded hover:bg-gray-700 mb-4 font-semibold text-sm"
       @click="clearLogs"
       :disabled="running"
     >
