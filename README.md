@@ -60,48 +60,52 @@ _Note: This script automatically builds the project and pushes the  `dist`  fold
 
 ## 📁 Project Structure
 
-src
+## Project Structure
+
+```text
+src/
 ├── App.vue
 ├── main.ts
 │
-├── types
-│   ├── nodes.ts            # Node & edge type definitions
-│   └── workflow.ts         # Core workflow data models
+├── types/
+│   ├── nodes.ts
+│   └── workflow.ts
 │
-├── config
-│   └── transforms.ts       # Supported transform operations & metadata
+├── config/
+│   └── transforms.ts
 │
-├── stores
-│   ├── flowStore.ts        # Central workflow graph state (nodes, edges)
-│   └── alertStore.ts       # Global alert / notification state
+├── stores/
+│   ├── flowStore.ts
+│   └── alertStore.ts
 │
-├── utils
-│   ├── graph.ts            # Graph validation (cycles, connectivity)
-│   └── transformations.ts # Execution logic for transform nodes
+├── utils/
+│   ├── graph.ts
+│   └── transformations.ts
 │
-├── components
-│   ├── FlowCanvas.vue      # Vue Flow canvas & edge/node wiring
-│   ├── NodePalette.vue     # Draggable node palette (Start, If, Transform, End)
-│   ├── NodeInspector.vue   # Right-side configuration panel
-│   ├── ExecutePanel.vue   # Workflow execution & logs
-│   ├── ImportFile.vue     # JSON workflow import
-│   ├── ExportFile.vue     # JSON workflow export
-│   ├── AppAlert.vue       # Global alert UI
+├── components/
+│   ├── FlowCanvas.vue
+│   ├── NodePalette.vue
+│   ├── NodeInspector.vue
+│   ├── ExecutePanel.vue
+│   ├── ImportFile.vue
+│   ├── ExportFile.vue
+│   ├── AppAlert.vue
 │   │
-│   ├── editors             # Node & edge configuration editors
+│   ├── editors/
 │   │   ├── StartNodeEditor.vue
 │   │   ├── TransformNodeEditor.vue
 │   │   ├── ConditionNodeEditor.vue
 │   │   ├── EndNodeEditor.vue
 │   │   └── EdgeEditor.vue
 │   │
-│   └── customNodes         # Custom Vue Flow node renderers
+│   └── customNodes/
 │       ├── StartNode.vue
 │       ├── TransformNode.vue
 │       ├── ConditionNode.vue
 │       └── EndNode.vue
 │
-└── style.css               # Global styles
+└── style.css
+```
 
 
 ### Key Features
