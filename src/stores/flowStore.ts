@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import { ref, watch, computed } from 'vue'
 import { type Edge, type Node, type Connection, Position } from '@vue-flow/core';
 import { ConditionNode, NodeType, TransformNode, TypeNode } from '@/types/nodes';
-import ConditionNodeCmp from '@/components/customNodes/conditionNode.vue';
 
 export const useFlowStore = defineStore('flow', () => {
   const nodes = ref<Node[]>([])
@@ -78,23 +77,6 @@ export const useFlowStore = defineStore('flow', () => {
     nodes.value.push(baseNode)
   }
 
-
-
-
-
-  function addEdgeFromConnection(connection: Connection) {
-    const edge: Edge = {
-      id: crypto.randomUUID(),
-      source: connection.source!,
-      target: connection.target!,
-      sourceHandle: connection.sourceHandle,
-      targetHandle: connection.targetHandle,
-      type: 'default',
-    }
-
-    edges.value.push(edge)
-  }
-
   // watch(() => selectedEdge,
   //   (selectedEdge) => {
   //     console.log('selectedEdge updated:', selectedEdge)
@@ -105,6 +87,11 @@ export const useFlowStore = defineStore('flow', () => {
   // function addEdge(connection: Connection) {
   //   edges.value.push(connection)
   // }
+
+  function clearCanvas() {
+    nodes.value = []
+    edges.value = []
+  }
 
   function selectNode(id: string | null) {
     selectedNodeId.value = id
@@ -158,6 +145,7 @@ export const useFlowStore = defineStore('flow', () => {
     selectEdge,
     updateNodeData,
     deleteNode,
-    deleteEdge
+    deleteEdge,
+    clearCanvas
   }
 })

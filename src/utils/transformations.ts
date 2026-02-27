@@ -1,21 +1,5 @@
 import { LogEntry, WorkflowGraph } from "@/types/workflow"
 
-function applyTransform(node, payload) {
-  const { field, operation, value } = node.data
-  const current = payload[field]
-
-  switch (operation) {
-    case 'uppercase':
-      return { ...payload, [field]: String(current).toUpperCase() }
-
-    case 'append':
-      return { ...payload, [field]: String(current) + value }
-
-    case 'add':
-      return { ...payload, [field]: Number(current) + Number(value) }
-  }
-}
-
 export function runWorkflow(graph: WorkflowGraph): { logs: LogEntry[], errors: string[] } {
   const logs: LogEntry[] = []
   const errors: string[] = []

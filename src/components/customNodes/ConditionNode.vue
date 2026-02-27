@@ -3,8 +3,8 @@ import { Handle, Position } from '@vue-flow/core'
 </script>
 
 <template>
-  <div class="bg-yellow-100 border rounded p-2 text-sm">
-    <div class="font-bold mb-1">Condition</div>
+  <div class="bg-yellow-100 border rounded p-2 text-xs min-w-37.5">
+    <div class="text-center">Condition</div>
 
     <!-- Incoming -->
     <Handle
@@ -14,7 +14,7 @@ import { Handle, Position } from '@vue-flow/core'
 
     <!-- True branch -->
     <Handle
-      id="top"
+      id="left"
       type="source"
       :position="Position.Left"
     />
