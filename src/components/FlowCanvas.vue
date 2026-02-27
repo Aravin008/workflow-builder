@@ -55,7 +55,8 @@ function onConnect(connection: Connection) {
     }
   }
 
-  addEdges([edge])
+  // addEdges([edge])
+  flow.addEdge(edge)
 }
 
 function onNodeClick({ node }) {

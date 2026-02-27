@@ -3,6 +3,7 @@ import { ref, watch, computed } from 'vue'
 import { type Edge, type Node, type Connection, Position, useVueFlow } from '@vue-flow/core';
 import { ConditionNode, FlowExport, NodeType, TransformNode, TypeNode } from '@/types/nodes';
 import { useAlertStore } from './alertStore';
+import { hasCycle } from '@/utils/graph';
 
 const VERSION = '2.4'
 export const useFlowStore = defineStore('flow', () => {
@@ -177,6 +178,55 @@ export const useFlowStore = defineStore('flow', () => {
 
   loadFromStorage()
 
+  function canConnect(sourceId: string, targetId: string): boolean {
+    const source = nodes.value.find(n => n.id === sourceId)
+    const target = nodes.value.find(n => n.id === targetId)
+
+    if (!source || !target) return false
+
+    // no self loop
+    if (sourceId === targetId) {
+      alert.show('Node cannot connect to itself')
+      return false
+    }
+
+    // start node: no inbound
+    if (target.data.type === 'start') {
+      alert.show('Start node cannot have incoming connections')
+      return false
+    }
+
+    // end node: no outbound
+    if (source.data.type === 'end') {
+      alert.show('End node cannot have outgoing connections')
+      return false
+    }
+
+    return true
+  }
+
+  function addEdge(edge: Edge) {
+    if (!canConnect(edge.source, edge.target)) return
+    edges.value.push(edge)
+  }
+
+  function validateBeforeExecute(): boolean {
+    if (!nodes.value.length) {
+      alert.show('Flow is empty')
+      return false
+    }
+
+    // cycle detection (your existing logic)
+    if (hasCycle(nodes.value, edges.value)) {
+      alert.show('Flow contains a cycle')
+      return false
+    }
+
+    return true
+  }
+
+
+
   return {
     version: VERSION,
     nodes,
@@ -186,7 +236,7 @@ export const useFlowStore = defineStore('flow', () => {
     selectedEdgeId,
     selectedEdge,
     addNode,
-    // addEdge,
+    addEdge,
     selectNode,
     selectEdge,
     updateNodeData,
@@ -194,6 +244,7 @@ export const useFlowStore = defineStore('flow', () => {
     deleteEdge,
     clearCanvas,
     exportFlow,
-    importFlow
+    importFlow,
+    validateBeforeExecute
   }
 })

@@ -11,6 +11,9 @@ const logs = ref<LogEntry[]>([])
 
 function runWorkflow() {
   if (running.value) return
+
+  if (!flow.validateBeforeExecute()) return
+
   running.value = true
   logs.value = []
 
@@ -75,7 +78,6 @@ import { runWorkflow as flowEngine } from '@/utils/transformations'
 </template>
 
 <style scoped>
-/* Optional scrollbar styling */
 div::-webkit-scrollbar {
   width: 6px;
 }
