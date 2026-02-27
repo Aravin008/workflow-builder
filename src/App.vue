@@ -15,7 +15,7 @@ const flow = useFlowStore()
     <NodePalette />
 
     <div class="flex-1">
-        <FlowCanvas />
+      <FlowCanvas />
     </div>
     <div class="flex flex-col space-y-1 p-1">
       <NodeInspector

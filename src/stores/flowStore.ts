@@ -19,7 +19,7 @@ export const useFlowStore = defineStore('flow', () => {
     return {
       type: 'start' as const,
       label,
-      payload: '{ "message": "hello" }',
+      payload: '{ "message": "hello", "count": 0 }',
     }
   }
 
