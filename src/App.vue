@@ -5,6 +5,7 @@ import NodeInspector from '@/components/NodeInspector.vue';
 import FlowCanvas from './components/FlowCanvas.vue';
 import { useFlowStore } from './stores/flowStore';
 import ExecutePanel from './components/ExecutePanel.vue';
+import AppAlert from '@/components/AppAlert.vue'
 
 const flow = useFlowStore()
 </script>
@@ -25,5 +26,6 @@ const flow = useFlowStore()
       />
       <ExecutePanel class="flex-1"/>
     </div>
+    <AppAlert />
   </div>
 </template>
