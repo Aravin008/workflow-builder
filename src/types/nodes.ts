@@ -51,3 +51,8 @@ export interface FlowExport {
     createdAt: string
   }
 }
+
+export type FlowSnapshot = {
+  nodes: Node[]
+  edges: Edge[]
+}

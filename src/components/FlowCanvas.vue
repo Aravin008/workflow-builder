@@ -11,8 +11,9 @@ import { markRaw } from 'vue'
 import { MiniMap } from '@vue-flow/minimap'
 import { Controls } from '@vue-flow/controls'
 import { Background } from '@vue-flow/background'
+import { useUndoRedoHotkeys } from '@/utils/undoRedo'
 
-
+useUndoRedoHotkeys()
 const flow = useFlowStore()
 const { addEdges, project } = useVueFlow()
 const alert = useAlertStore()

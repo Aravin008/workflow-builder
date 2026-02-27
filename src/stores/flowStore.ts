@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, watch, computed } from 'vue'
-import { type Edge, type Node, type Connection, Position, useVueFlow } from '@vue-flow/core';
-import { ConditionNode, FlowExport, NodeType, TransformNode, TypeNode } from '@/types/nodes';
+import { type Edge, type Node, } from '@vue-flow/core';
+import { ConditionNode, FlowExport, NodeType, TransformNode, TypeNode, FlowSnapshot } from '@/types/nodes';
 import { useAlertStore } from './alertStore';
 import { hasCycle } from '@/utils/graph';
 
@@ -12,6 +12,8 @@ export const useFlowStore = defineStore('flow', () => {
   const selectedNodeId = ref<string | null>(null)
   const selectedEdgeId = ref<string | null>(null)
   const alert = useAlertStore()
+  const undoStack = ref<FlowSnapshot[]>([]) // Max 10 size
+  const redoStack = ref<FlowSnapshot[]>([])
 
   function createStartNode(label: string) {
     return {
@@ -75,6 +77,7 @@ export const useFlowStore = defineStore('flow', () => {
       return
     }
 
+    pushHistory()
     const nodeData = createNodeData(type, label)
 
     const baseNode: Node = {
@@ -91,6 +94,7 @@ export const useFlowStore = defineStore('flow', () => {
   }
 
   function clearCanvas() {
+    pushHistory()
     nodes.value = []
     edges.value = []
   }
@@ -106,6 +110,7 @@ export const useFlowStore = defineStore('flow', () => {
   }
 
   function deleteNode(id: string) {
+    pushHistory()
     nodes.value = nodes.value.filter(n => n.id !== id)
     edges.value = edges.value.filter(
       e => e.source !== id && e.target !== id
@@ -114,11 +119,13 @@ export const useFlowStore = defineStore('flow', () => {
   }
 
   function deleteEdge(id: string) {
+    pushHistory()
     edges.value = edges.value.filter(e => e.id !== id)
     selectedEdgeId.value = null
   }
 
   function updateNodeData(id: string, data: any) {
+    // pushHistory()
     const node = nodes.value.find(n => n.id === id)
     if (node) {
       node.data = { ...node.data, ...data }
@@ -175,7 +182,7 @@ export const useFlowStore = defineStore('flow', () => {
       }
     }
   }
-
+  // Load from localStorage
   loadFromStorage()
 
   function canConnect(sourceId: string, targetId: string): boolean {
@@ -207,6 +214,7 @@ export const useFlowStore = defineStore('flow', () => {
 
   function addEdge(edge: Edge) {
     if (!canConnect(edge.source, edge.target)) return
+    pushHistory()
     edges.value.push(edge)
   }
 
@@ -225,6 +233,53 @@ export const useFlowStore = defineStore('flow', () => {
     return true
   }
 
+  function deepClone<T>(data: T): T {
+    return JSON.parse(JSON.stringify(data))
+  }
+
+  function pushHistory() {
+
+    undoStack.value.push(deepClone({ 
+      nodes: nodes.value, 
+      edges: edges.value
+    }))
+
+    if (undoStack.value.length > 10) {
+      undoStack.value.shift()
+    }
+
+    // user action invalidates redo
+    redoStack.value.length = 0
+  }
+
+  function undo() {
+    if (!undoStack.value.length) return
+
+    redoStack.value.push(deepClone({
+      nodes: nodes.value,
+      edges: edges.value
+    }))
+
+    const prev = undoStack.value.pop()!
+    nodes.value = prev.nodes
+    edges.value = prev.edges
+  }
+
+  function redo() {
+    if (!redoStack.value.length) return
+
+    undoStack.value.push(deepClone({
+      nodes: nodes.value,
+      edges: edges.value
+    }))
+
+    const next = redoStack.value.pop()!
+    nodes.value = next.nodes
+    edges.value = next.edges
+  }
+
+  const canUndo = computed(() => undoStack.value.length > 0)
+  const canRedo = computed(() => redoStack.value.length > 0)
 
 
   return {
@@ -245,6 +300,10 @@ export const useFlowStore = defineStore('flow', () => {
     clearCanvas,
     exportFlow,
     importFlow,
-    validateBeforeExecute
+    validateBeforeExecute,
+    undo,
+    redo,
+    canUndo,
+    canRedo
   }
 })
