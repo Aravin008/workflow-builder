@@ -160,13 +160,13 @@ export const useFlowStore = defineStore('flow', () => {
     [nodes, edges],
     () => {
       const data = exportFlow()
-      localStorage.setItem('vueflow-autosave', JSON.stringify(data))
+      localStorage.setItem('workflow-builder-vueflow-autosave', JSON.stringify(data))
     },
     { deep: true }
   )
 
   function loadFromStorage() {
-    const saved = localStorage.getItem('vueflow-autosave')
+    const saved = localStorage.getItem('workflow-builder-vueflow-autosave')
     if (saved) {
       try {
         importFlow(JSON.parse(saved))
