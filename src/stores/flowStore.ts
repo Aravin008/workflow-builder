@@ -1,12 +1,14 @@
 import { defineStore } from 'pinia'
 import { ref, watch, computed } from 'vue'
-import type { Edge, Node, Connection } from '@vue-flow/core'
-import { ConditionNode, NodeType, TransformNode, TypeNode } from '@/types/nodes'
+import { type Edge, type Node, type Connection, Position } from '@vue-flow/core';
+import { ConditionNode, NodeType, TransformNode, TypeNode } from '@/types/nodes';
+import ConditionNodeCmp from '@/components/customNodes/conditionNode.vue';
 
 export const useFlowStore = defineStore('flow', () => {
   const nodes = ref<Node[]>([])
   const edges = ref<Edge[]>([])
   const selectedNodeId = ref<string | null>(null)
+
 
   function createStartNode(label: string) {
     return {
@@ -62,14 +64,17 @@ export const useFlowStore = defineStore('flow', () => {
   function addNode(type: TypeNode, label: string) {
     const nodeData = createNodeData(type, label)
 
-    nodes.value.push({
+    const baseNode: Node = {
       id: crypto.randomUUID(),
+      type, 
       position: {
         x: 250,
         y: 100 + nodes.value.length * 80,
       },
       data: nodeData,
-    })
+    }
+
+    nodes.value.push(baseNode)
   }
 
 
