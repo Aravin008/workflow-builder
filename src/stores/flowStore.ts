@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
 import { ref, watch, computed } from 'vue'
 import { type Edge, type Node, type Connection, Position, useVueFlow } from '@vue-flow/core';
-import { ConditionNode, NodeType, TransformNode, TypeNode } from '@/types/nodes';
+import { ConditionNode, FlowExport, NodeType, TransformNode, TypeNode } from '@/types/nodes';
 import { useAlertStore } from './alertStore';
 
+const VERSION = '2.4'
 export const useFlowStore = defineStore('flow', () => {
   const nodes = ref<Node[]>([])
   const edges = ref<Edge[]>([])
@@ -88,17 +89,6 @@ export const useFlowStore = defineStore('flow', () => {
     nodes.value.push(baseNode)
   }
 
-  // watch(() => selectedEdge,
-  //   (selectedEdge) => {
-  //     console.log('selectedEdge updated:', selectedEdge)
-  //   },
-  //   { deep: true }
-  // )
-
-  // function addEdge(connection: Connection) {
-  //   edges.value.push(connection)
-  // }
-
   function clearCanvas() {
     nodes.value = []
     edges.value = []
@@ -127,7 +117,6 @@ export const useFlowStore = defineStore('flow', () => {
     selectedEdgeId.value = null
   }
 
-
   function updateNodeData(id: string, data: any) {
     const node = nodes.value.find(n => n.id === id)
     if (node) {
@@ -143,7 +132,53 @@ export const useFlowStore = defineStore('flow', () => {
     edges.value.find(n => n.id === selectedEdgeId.value) ?? null
   )
 
+  function exportFlow(): FlowExport {
+    return {
+      version: VERSION,
+      nodes: nodes.value,
+      edges: edges.value,
+      meta: {
+        createdAt: new Date().toISOString(),
+      },
+    }
+  }
+
+  function importFlow(data: FlowExport) {
+    if (!data.nodes || !data.edges) {
+      alert.show('Invalid workflow file')
+      return
+    }
+
+    nodes.value = data.nodes
+    edges.value = data.edges
+    selectedNodeId.value = null
+    selectedEdgeId.value = null
+  }
+
+  watch(
+    [nodes, edges],
+    () => {
+      const data = exportFlow()
+      localStorage.setItem('vueflow-autosave', JSON.stringify(data))
+    },
+    { deep: true }
+  )
+
+  function loadFromStorage() {
+    const saved = localStorage.getItem('vueflow-autosave')
+    if (saved) {
+      try {
+        importFlow(JSON.parse(saved))
+      } catch {
+        alert.show('Failed to restore previous session')
+      }
+    }
+  }
+
+  loadFromStorage()
+
   return {
+    version: VERSION,
     nodes,
     edges,
     selectedNodeId,
@@ -157,6 +192,8 @@ export const useFlowStore = defineStore('flow', () => {
     updateNodeData,
     deleteNode,
     deleteEdge,
-    clearCanvas
+    clearCanvas,
+    exportFlow,
+    importFlow
   }
 })

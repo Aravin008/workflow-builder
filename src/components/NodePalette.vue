@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useFlowStore } from '@/stores/flowStore'
+import ExportFile from './ExportFile.vue';
+import ImportFile from './ImportFile.vue';
 
 const flow = useFlowStore()
 
@@ -10,12 +12,12 @@ function onDragStart(event: DragEvent, type: string) {
 </script>
 
 <template>
-  <div class="h-screen flex flex-col border-r">
+  <div class="h-screen flex flex-col border-r justify-between">
     <div class="w-50 p-4 space-y-2">
       <h2 class="font-bold text-center">Nodes</h2>
 
       <div class="border p-2 cursor-pointer text-center rounded"
-          @click="flow.addNode('start', 'Start Node')"
+          @click="flow.addNode('start', 'Start Node', null)"
           draggable="true"
           @dragstart="onDragStart($event, 'start')"
       >
@@ -23,7 +25,7 @@ function onDragStart(event: DragEvent, type: string) {
       </div>
 
       <div class="border p-2 cursor-pointer text-center rounded"
-          @click="flow.addNode('transform', 'Transform Node')"
+          @click="flow.addNode('transform', 'Transform Node', null)"
           draggable="true"
           @dragstart="onDragStart($event, 'transform')"
       >
@@ -31,7 +33,7 @@ function onDragStart(event: DragEvent, type: string) {
       </div>
 
       <div class="border p-2 cursor-pointer text-center rounded"
-          @click="flow.addNode('condition', 'If / Else Node')"
+          @click="flow.addNode('condition', 'If / Else Node', null)"
           draggable="true"
           @dragstart="onDragStart($event, 'condition')"
       >
@@ -39,17 +41,23 @@ function onDragStart(event: DragEvent, type: string) {
       </div>
 
       <div class="border p-2 cursor-pointer text-center rounded"
-          @click="flow.addNode('end', 'End Node')"
+          @click="flow.addNode('end', 'End Node', null)"
           draggable="true"
           @dragstart="onDragStart($event, 'end')"
       >
         End Node
       </div>
     </div>
-    <div class="w-50 p-4 space-y-2">
-      <div class="border p-2 bg-red-800 text-white rounded cursor-pointer text-center"
-        @click="flow.clearCanvas()">
-        Clear Canvas
+    <div class="py-2 px-4 space-y-2">
+      <div class="w-50">
+        <div class="border p-2 bg-red-800 text-white rounded cursor-pointer text-center"
+          @click="flow.clearCanvas()">
+          Clear Canvas
+        </div>
+      </div>
+      <div class="flex flex-col justify-between space-y-2">
+        <ExportFile />
+        <ImportFile />
       </div>
     </div>
   </div>
