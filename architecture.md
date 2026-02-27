@@ -162,6 +162,8 @@ Validation is split into two phases:
 
 ### Structural Validation
 Performed during graph editing:
+- Missing Start node
+- Adding second Start node
 - Prevents invalid connections
 - Enforces direction and branching rules
 - Ensures Start and End node constraints
