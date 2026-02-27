@@ -6,7 +6,7 @@ import { Edge } from '@/types/workflow'
 import ConditionNode from './customNodes/conditionNode.vue'
 
 const flow = useFlowStore()
-const { addEdges } = useVueFlow()
+const { addEdges, project } = useVueFlow()
 const nodeTypes = {
   condition: ConditionNode,
 }
@@ -42,6 +42,29 @@ function onNodeClick({ node }) {
 function onEdgeClick({ edge }) {
   flow.selectEdge(edge.id)
 }
+
+function onDragOver(event: DragEvent) {
+  event.preventDefault()
+  event.dataTransfer!.dropEffect = 'move'
+}
+
+function onDrop(event: DragEvent) {
+  event.preventDefault()
+
+  const type = event.dataTransfer?.getData('application/vueflow')
+  if (!type) return
+
+  const pane = document.querySelector('.vue-flow__pane') as HTMLElement
+  const bounds = pane.getBoundingClientRect()
+
+
+  const position = project({
+    x: event.clientX - bounds.left,
+    y: event.clientY - bounds.top,
+  })
+
+  flow.addNode(type as any, `${type} node`, position)
+}
 </script>
 
 <template>
@@ -52,5 +75,7 @@ function onEdgeClick({ edge }) {
     @connect="onConnect"
     @node-click="onNodeClick"
     @edge-click="onEdgeClick"
+    @dragover="onDragOver"
+    @drop="onDrop"
   />
 </template>

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, watch, computed } from 'vue'
-import { type Edge, type Node, type Connection, Position } from '@vue-flow/core';
+import { type Edge, type Node, type Connection, Position, useVueFlow } from '@vue-flow/core';
 import { ConditionNode, NodeType, TransformNode, TypeNode } from '@/types/nodes';
 
 export const useFlowStore = defineStore('flow', () => {
@@ -8,7 +8,7 @@ export const useFlowStore = defineStore('flow', () => {
   const edges = ref<Edge[]>([])
   const selectedNodeId = ref<string | null>(null)
   const selectedEdgeId = ref<string | null>(null)
-
+  const { project } = useVueFlow()
 
   function createStartNode(label: string) {
     return {
@@ -61,15 +61,32 @@ export const useFlowStore = defineStore('flow', () => {
     }
   }
 
-  function addNode(type: TypeNode, label: string) {
+  function canAddStartNode() {
+    return !nodes.value.some(n => n.data.type === 'start')
+  }
+  
+
+  function addNode(type: TypeNode, label: string, position: { x: number; y: number }) {
+    if (type === 'start' && !canAddStartNode()) {
+      alert('Only one Start node allowed')
+      return
+    }
+
     const nodeData = createNodeData(type, label)
+    const pane = document.querySelector('.vue-flow__pane') as HTMLElement
+    const bounds = pane.getBoundingClientRect()
+
+    const center = project({
+      x: window.innerWidth / 2 - bounds.left,
+      y: window.innerHeight / 2 - bounds.top,
+    })
+
 
     const baseNode: Node = {
       id: crypto.randomUUID(),
       type, 
-      position: {
-        x: 250,
-        y: 100 + nodes.value.length * 80,
+      position: position?? {
+        ...center
       },
       data: nodeData,
     }
