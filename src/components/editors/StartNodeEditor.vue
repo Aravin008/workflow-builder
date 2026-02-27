@@ -4,7 +4,7 @@ import type { Node } from '@vue-flow/core'
 import type { StartNode } from '@/types/nodes'
 
 const props = defineProps<{
-  node: Node<{ data: StartNode }>
+  node: Node<StartNode>
 }>()
 
 const flow = useFlowStore()

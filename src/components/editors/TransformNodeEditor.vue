@@ -5,7 +5,7 @@ import type { TransformNode, TypeTransformOp, TypeFieldType } from '@/types/node
 import { computed } from 'vue';
 
 const props = defineProps<{
-  node: Node<{ data: TransformNode }>
+  node: Node<TransformNode>
 }>()
 
 const flow = useFlowStore()

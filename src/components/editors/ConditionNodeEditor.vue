@@ -4,7 +4,7 @@ import type { Node } from '@vue-flow/core'
 import type { ConditionNode, ConditionOp, TypeFieldType } from '@/types/nodes'
 
 const props = defineProps<{
-  node: Node<{ data: ConditionNode }>
+  node: Node<ConditionNode >
 }>()
 
 const flow = useFlowStore()
