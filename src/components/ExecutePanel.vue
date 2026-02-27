@@ -3,7 +3,7 @@
   import { useFlowStore } from '@/stores/flowStore'
   import type { LogEntry } from '@/types/workflow'
   // import { runWorkflow as flowEngine } from '@/engine/flowEngine'
-  import { runWorkflow as flowEngine } from '@/engine/flowEngine_v2';
+  import { runWorkflow as flowEngine } from '@/workflow/core/engine/flowEngine_v2';
 
   // Use store
   const flow = useFlowStore()

@@ -2,7 +2,6 @@ import { useAlertStore } from "@/stores/alertStore"
 import { TypeNode } from "@/types/nodes"
 import { GraphNode, LogEntry, WorkflowGraph } from "@/types/workflow"
 import { Edge, Node } from "@vue-flow/core"
-
 // type NodeType = 'start' | 'end' | 'transform' | 'condition'
 
 type ExecutionState = {
