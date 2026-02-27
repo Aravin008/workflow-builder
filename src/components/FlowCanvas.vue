@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { useVueFlow, VueFlow, MarkerType } from '@vue-flow/core'
+import { useVueFlow, VueFlow, MarkerType, Connection } from '@vue-flow/core'
 import { useFlowStore } from '@/stores/flowStore'
-import type { Connection } from '@vue-flow/core'
 import { Edge } from '@/types/workflow'
 import StartNode from '@/components/customNodes/StartNode.vue'
 import EndNode from '@/components/customNodes/EndNode.vue'
@@ -9,6 +8,9 @@ import ConditionNode from '@/components/customNodes/ConditionNode.vue'
 import TransformNode from '@/components/customNodes/TransformNode.vue'
 import { useAlertStore } from '@/stores/alertStore'
 import { markRaw } from 'vue'
+import { MiniMap } from '@vue-flow/minimap'
+import { Controls } from '@vue-flow/controls'
+import { Background } from '@vue-flow/background'
 
 
 const flow = useFlowStore()
@@ -106,5 +108,9 @@ function onDrop(event: DragEvent) {
         type: MarkerType.ArrowClosed
       }
     }"
-  />
+  >
+    <MiniMap />
+    <Controls />
+    <Background />
+  </VueFlow>
 </template>
