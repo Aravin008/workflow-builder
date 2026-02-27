@@ -15,6 +15,7 @@
 
     if (!flow.validateBeforeExecute()) return
 
+    clearLogs()
     running.value = true
     logs.value = []
 
@@ -28,10 +29,8 @@
       logs.value.push({ nodeId: 'ERROR', type: 'error', payload: errors.join('; ') })
     }
 
-    // Append execution logs
     logs.value.push(...runLogs)
 
-    // Done
     running.value = false
 
   }

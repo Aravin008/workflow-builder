@@ -2,7 +2,7 @@ import { useAlertStore } from "@/stores/alertStore"
 import { LogEntry, WorkflowGraph } from "@/types/workflow"
 
 export function runWorkflow(graph: WorkflowGraph): { logs: LogEntry[], errors: string[] } {
-  const logs: LogEntry[] = []
+  let logs: LogEntry[] = []
   const errors: string[] = []
   const alert = useAlertStore()
   const { nodes, edges } = graph
@@ -28,7 +28,9 @@ export function runWorkflow(graph: WorkflowGraph): { logs: LogEntry[], errors: s
   function traverse(nodeId: string, payload: any) {
     try {
       if (visited.has(nodeId)) {
+        alert.show("Cycle detected, Please remove cycles to execute.")
         errors.push(`Cycle detected at node ${nodeId}`)
+        logs = []
         return
       }
       visited.add(nodeId)
@@ -37,6 +39,9 @@ export function runWorkflow(graph: WorkflowGraph): { logs: LogEntry[], errors: s
       const { data } = node
 
       // Log current state
+      if(data.type == 'start') {
+        payload = JSON.parse(data.payload)
+      }
       logs.push({ nodeId, type: data.type, payload: JSON.parse(JSON.stringify(payload)) })
 
       switch (data.type) {
