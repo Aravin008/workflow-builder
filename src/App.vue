@@ -7,7 +7,6 @@ import { useFlowStore } from './stores/flowStore';
 import ExecutePanel from './components/ExecutePanel.vue';
 
 const flow = useFlowStore()
-console.log("selected", flow.selectedNode)
 </script>
 
 <template>
@@ -19,7 +18,9 @@ console.log("selected", flow.selectedNode)
     </div>
     <div class="flex flex-col">
       <NodeInspector
-        v-if="flow.selectedNode" 
+        v-if="flow.selectedNode || flow.selectedEdge"
+        :node="flow.selectedNode"
+        :edge="flow.selectedEdge"
         :key="flow.selectedNode?.id"
       />
       <ExecutePanel class="flex-1"/>

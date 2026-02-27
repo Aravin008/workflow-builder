@@ -8,6 +8,7 @@ export const useFlowStore = defineStore('flow', () => {
   const nodes = ref<Node[]>([])
   const edges = ref<Edge[]>([])
   const selectedNodeId = ref<string | null>(null)
+  const selectedEdgeId = ref<string | null>(null)
 
 
   function createStartNode(label: string) {
@@ -94,13 +95,12 @@ export const useFlowStore = defineStore('flow', () => {
     edges.value.push(edge)
   }
 
-  watch(
-    () => edges,
-    (edges) => {
-      console.log('Edges updated:', edges)
-    },
-    { deep: true }
-  )
+  // watch(() => selectedEdge,
+  //   (selectedEdge) => {
+  //     console.log('selectedEdge updated:', selectedEdge)
+  //   },
+  //   { deep: true }
+  // )
 
   // function addEdge(connection: Connection) {
   //   edges.value.push(connection)
@@ -108,7 +108,27 @@ export const useFlowStore = defineStore('flow', () => {
 
   function selectNode(id: string | null) {
     selectedNodeId.value = id
+    selectedEdgeId.value = null
   }
+
+  function selectEdge(id: string | null) {
+    selectedEdgeId.value = id
+    selectedNodeId.value = null
+  }
+
+  function deleteNode(id: string) {
+    nodes.value = nodes.value.filter(n => n.id !== id)
+    edges.value = edges.value.filter(
+      e => e.source !== id && e.target !== id
+    )
+    selectedNodeId.value = null
+  }
+
+  function deleteEdge(id: string) {
+    edges.value = edges.value.filter(e => e.id !== id)
+    selectedEdgeId.value = null
+  }
+
 
   function updateNodeData(id: string, data: any) {
     const node = nodes.value.find(n => n.id === id)
@@ -121,14 +141,23 @@ export const useFlowStore = defineStore('flow', () => {
     nodes.value.find(n => n.id === selectedNodeId.value) ?? null
   )
 
+  const selectedEdge = computed(() =>
+    edges.value.find(n => n.id === selectedEdgeId.value) ?? null
+  )
+
   return {
     nodes,
     edges,
     selectedNodeId,
     selectedNode,
+    selectedEdgeId,
+    selectedEdge,
     addNode,
     // addEdge,
     selectNode,
+    selectEdge,
     updateNodeData,
+    deleteNode,
+    deleteEdge
   }
 })

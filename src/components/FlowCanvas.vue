@@ -11,7 +11,6 @@ const nodeTypes = {
   condition: ConditionNode,
 }
 function onConnect(connection: Connection) {
-  // Find the source node
   const sourceNode = flow.nodes.find(n => n.id === connection.source)
 
   // Build edge object
@@ -33,12 +32,15 @@ function onConnect(connection: Connection) {
     }
   }
 
-  // Add edge to VueFlow + store
   addEdges([edge])
 }
 
 function onNodeClick({ node }) {
   flow.selectNode(node.id)
+}
+
+function onEdgeClick({ edge }) {
+  flow.selectEdge(edge.id)
 }
 </script>
 
@@ -49,5 +51,6 @@ function onNodeClick({ node }) {
     :node-types="nodeTypes"
     @connect="onConnect"
     @node-click="onNodeClick"
+    @edge-click="onEdgeClick"
   />
 </template>
