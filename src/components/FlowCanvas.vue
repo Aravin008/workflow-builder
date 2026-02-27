@@ -83,13 +83,18 @@ function onDrop(event: DragEvent) {
   const pane = document.querySelector('.vue-flow__pane') as HTMLElement
   const bounds = pane.getBoundingClientRect()
 
-
+  const NODE_WIDTH = 150
+  const NODE_HEIGHT = 60
   const position = project({
     x: event.clientX - bounds.left,
     y: event.clientY - bounds.top,
   })
 
-  flow.addNode(type as any, `${type} node`, position)
+  flow.addNode(type as any, `${type} node`, {
+      x: position.x - NODE_WIDTH / 2,
+      y: position.y - NODE_HEIGHT / 2,
+    }
+  )
 }
 </script>
 

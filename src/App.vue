@@ -17,7 +17,7 @@ const flow = useFlowStore()
     <div class="flex-1">
         <FlowCanvas />
     </div>
-    <div class="flex flex-col">
+    <div class="flex flex-col space-y-1 p-1">
       <NodeInspector
         v-if="flow.selectedNode || flow.selectedEdge"
         :node="flow.selectedNode"

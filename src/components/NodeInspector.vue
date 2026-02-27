@@ -22,7 +22,7 @@ console.log("isNode", isNode, isEdge)
 </script>
 
 <template>
-  <aside class="w-80 border-l p-4 bg-gray-50 relative">
+  <aside class="w-80 border-l p-4 bg-gray-50 relative border rounded">
     <div
       @click="flow.selectNode(null); flow.selectEdge(null)"
       class="bg-black px-2 py-1 cursor-pointer text-white absolute right-2 top-2 border rounded"
@@ -45,7 +45,7 @@ console.log("isNode", isNode, isEdge)
       />
 
       <button
-        class="mt-6 bg-red-700 cursor-pointer text-white px-3 py-2 rounded w-full"
+        class="mt-6 bg-red-800 cursor-pointer text-white px-3 py-2 rounded w-full font-bold"
         @click="flow.deleteNode(props.node!.id)"
       >
         Delete Node
@@ -59,7 +59,7 @@ console.log("isNode", isNode, isEdge)
       <EdgeEditor :edge="props.edge" />
 
       <button
-        class="mt-6 bg-red-700 cursor-pointer text-white px-3 py-2 rounded w-full"
+        class="mt-6 bg-red-800 cursor-pointer text-white px-3 py-2 rounded w-full text-bold"
         @click="flow.deleteEdge(props.edge!.id)"
       >
         Delete Edge
