@@ -2,7 +2,8 @@
   import { ref } from 'vue'
   import { useFlowStore } from '@/stores/flowStore'
   import type { LogEntry } from '@/types/workflow'
-  import { runWorkflow as flowEngine } from '@/engine/flowEngine'
+  // import { runWorkflow as flowEngine } from '@/engine/flowEngine'
+  import { runWorkflow as flowEngine } from '@/engine/flowEngine_v2';
 
   // Use store
   const flow = useFlowStore()
@@ -10,7 +11,7 @@
   const running = ref(false)
   const logs = ref<LogEntry[]>([])
 
-  function runWorkflow() {
+  async function runWorkflow() {
     if (running.value) return
 
     if (!flow.validateBeforeExecute()) return
@@ -20,7 +21,7 @@
     logs.value = []
 
     // Run engine
-    const { logs: runLogs, errors } = flowEngine({
+    const { logs: runLogs, errors } = await flowEngine({
       nodes: flow.nodes,
       edges: flow.edges
     })
