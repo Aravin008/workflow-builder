@@ -109,6 +109,8 @@ src
 -   **Execution Simulation:**  Real-time data processing from Start to End with visual execution logs.
 -   **Graph Validation:**  Built-in cycle detection (Infinite loop prevention) and connection validation.
 -   **Persistence:**  Automatic session recovery via  LocalStorage  and manual JSON Export/Import.
+- **Undo / Redo (Structural):** Supports undo and redo for core graph mutations such as node/edge creation, deletion, and canvas reset (up to last 10 actions).
+
 
 ## Design Decisions
 
@@ -116,3 +118,5 @@ src
 - **Validation Strategy:** Structural validation (invalid connections, missing nodes) happens during graph edits, while logical validation (cycle detection) runs before execution.
 - **Persistence:** LocalStorage autosave enables session recovery without requiring a backend.
 - **Static Deployment:** The app is fully client-side and deployed via GitHub Pages to simplify hosting and reduce infrastructure complexity.
+- **Undo/Redo Scope:** Undo and redo are implemented for structural graph changes (nodes and edges). Fine-grained form edits are excluded to avoid noisy history states and improve UX predictability.
+
