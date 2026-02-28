@@ -11,7 +11,7 @@ export const conditionNodeHandler: NodeHandler = async (
   const leftValue = payload[field]
 
   const op = operatorRegistry.get(operator)
-  const result = op(leftValue, value)
+  const result = op.handler(leftValue, value)
 
   const outgoingEdges = edges.filter(e => e.source === node.id)
 

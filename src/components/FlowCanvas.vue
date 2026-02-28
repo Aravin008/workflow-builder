@@ -91,7 +91,7 @@ function onDrop(event: DragEvent) {
     y: event.clientY - bounds.top,
   })
 
-  flow.addNode(type as any, `${type} node`, {
+  flow.addNode(type as any, {
       x: position.x - NODE_WIDTH / 2,
       y: position.y - NODE_HEIGHT / 2,
     }
