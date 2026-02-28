@@ -14,14 +14,21 @@ export type NodeHandler = (
   edges: Edge[]
 ) => Promise<ExecutionResult>
 
-export type FieldType = 'string' | 'number' | 'boolean' | 'select'
+export type FieldType =
+  | 'string'
+  | 'number'
+  | 'boolean'
+  | 'select'
+  | 'json'
 
 export interface ConfigField {
   key: string
   label: string
   type: FieldType
   required?: boolean
-  options?: string[]
+  default?: any
+  placeholder?: string
+  options?: { label: string; value: any }[]
 }
 
 export interface NodeDefinition {

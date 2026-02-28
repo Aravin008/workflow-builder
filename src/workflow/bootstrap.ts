@@ -18,7 +18,10 @@ export function initializeWorkflowSystem() {
   )
 
   if (operationField) {
-    operationField.options = operationRegistry.getAll()
+    operationField.options = operationRegistry.getAll().map(op => ({
+    label: op.label,   // depending on structure
+    value: op.key
+  }))
   }
 
   // Condition operators
@@ -27,7 +30,10 @@ export function initializeWorkflowSystem() {
   )
 
   if (operatorField) {
-    operatorField.options = operatorRegistry.getAll()
+    operatorField.options = operatorRegistry.getAll().map(op => ({
+      label: op.label,
+      value: op.key
+    }))
   }
 
   // 3️⃣ Register nodes

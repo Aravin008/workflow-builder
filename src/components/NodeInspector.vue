@@ -3,11 +3,13 @@ import { computed } from 'vue'
 import { useFlowStore } from '@/stores/flowStore'
 import type { Node, Edge } from '@vue-flow/core'
 
-import StartNodeEditor from './editors/StartNodeEditor.vue'
-import TransformNodeEditor from './editors/TransformNodeEditor.vue'
-import ConditionNodeEditor from './editors/ConditionNodeEditor.vue'
-import EndNodeEditor from './editors/EndNodeEditor.vue'
+// import StartNodeEditor from './editors/StartNodeEditor.vue'
+// import TransformNodeEditor from './editors/TransformNodeEditor.vue'
+// import ConditionNodeEditor from './editors/ConditionNodeEditor.vue'
+// import EndNodeEditor from './editors/EndNodeEditor.vue'
 import EdgeEditor from './editors/EdgeEditor.vue'
+import NodeEditForm from './editors/NodeEditForm.vue'
+import { nodeRegistry } from '@/workflow/core/node-registry'
 
 const props = defineProps<{
   node: Node | null
@@ -18,7 +20,10 @@ const flow = useFlowStore()
 
 const isNode = computed(() => !!props.node)
 const isEdge = computed(() => !!props.edge)
-console.log("isNode", isNode, isEdge)
+const selectedNode = props.node
+const definition = selectedNode && nodeRegistry.get(selectedNode.data.type)
+console.log("isNode", isNode, isEdge, definition, selectedNode?.data?.type)
+
 </script>
 
 <template>
@@ -34,7 +39,7 @@ console.log("isNode", isNode, isEdge)
     <template v-if="isNode">
       <h2 class="font-semibold mb-4">Node Inspector</h2>
 
-      <component
+      <!-- <component
         :is="{
           start: StartNodeEditor,
           transform: TransformNodeEditor,
@@ -42,6 +47,11 @@ console.log("isNode", isNode, isEdge)
           end: EndNodeEditor
         }[props.node!.data.type]"
         :node="props.node"
+      /> -->
+      <NodeEditForm
+        v-if="definition"
+        :schema="definition.configSchema"
+        v-model="selectedNode.data"
       />
 
       <button
