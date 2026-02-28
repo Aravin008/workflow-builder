@@ -17,7 +17,7 @@ function onDragStart(event: DragEvent, type: string) {
       <h2 class="font-bold text-center">Nodes</h2>
 
       <div class="border p-2 bg-green-100 cursor-pointer text-center rounded"
-          @click="flow.addNode('start', 'Start Node', null)"
+          @click="flow.addNode('start',  null)"
           draggable="true"
           @dragstart="onDragStart($event, 'start')"
       >
@@ -25,7 +25,7 @@ function onDragStart(event: DragEvent, type: string) {
       </div>
 
       <div class="border p-2 bg-blue-100 cursor-pointer text-center rounded"
-          @click="flow.addNode('transform', 'Transform Node', null)"
+          @click="flow.addNode('transform', null)"
           draggable="true"
           @dragstart="onDragStart($event, 'transform')"
       >
@@ -33,7 +33,7 @@ function onDragStart(event: DragEvent, type: string) {
       </div>
 
       <div class="border p-2 bg-yellow-100 cursor-pointer text-center rounded"
-          @click="flow.addNode('condition', 'If / Else Node', null)"
+          @click="flow.addNode('condition', null)"
           draggable="true"
           @dragstart="onDragStart($event, 'condition')"
       >
@@ -41,7 +41,7 @@ function onDragStart(event: DragEvent, type: string) {
       </div>
 
       <div class="border bg-red-100 p-2 cursor-pointer text-center rounded"
-          @click="flow.addNode('end', 'End Node', null)"
+          @click="flow.addNode('end', null)"
           draggable="true"
           @dragstart="onDragStart($event, 'end')"
       >

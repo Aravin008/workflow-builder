@@ -66,25 +66,6 @@ export const useFlowStore = defineStore('flow', () => {
   //       return createEndNode(label)
   //   }
   // }
-  function createNode(type: string) {
-    const def = nodeRegistry.get(type)
-
-    const defaultData = {}
-
-    def.configSchema.forEach(field => {
-      if (field.default !== undefined) {
-        defaultData[field.key] = field.default
-      }
-    })
-
-    return {
-      id: uuid(),
-      data: {
-        type,
-        ...defaultData
-      }
-    }
-  }
 
   function canAddStartNode() {
     return !nodes.value.some(n => n.data.type === 'start')

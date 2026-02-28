@@ -3,11 +3,12 @@
   import { useFlowStore } from '@/stores/flowStore'
   import type { LogEntry } from '@/types/workflow'
   // import { runWorkflow as flowEngine } from '@/engine/flowEngine'
-  import { runWorkflow as flowEngine } from '@/workflow/core/engine/flowEngine_v2';
+  import { runWorkflow as flowEngine } from '@/workflow/core/engine/flowEngine_v3';
+  import { useAlertStore } from "@/stores/alertStore"
 
   // Use store
   const flow = useFlowStore()
-
+  const alert = useAlertStore()
   const running = ref(false)
   const logs = ref<LogEntry[]>([])
 
@@ -28,6 +29,7 @@
 
     if (errors.length > 0) {
       logs.value.push({ nodeId: 'ERROR', type: 'error', payload: errors.join('; ') })
+      alert.show(errors[0])
     }
 
     logs.value.push(...runLogs)
