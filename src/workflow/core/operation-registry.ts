@@ -1,25 +1,24 @@
-export type TransformOperation = (
-  currentValue: any,
-  configValue: any
-) => any
+export interface OperationDefinition {
+  key: string
+  label: string
+  handler: (current: any, value?: any) => any
+}
 
 class OperationRegistry {
-  private registry = new Map<string, TransformOperation>()
+  private operations = new Map<string, OperationDefinition>()
 
-  register(name: string, handler: TransformOperation) {
-    this.registry.set(name, handler)
+  register(def: OperationDefinition) {
+    this.operations.set(def.key, def)
   }
 
-  get(name: string): TransformOperation {
-    const op = this.registry.get(name)
-    if (!op) {
-      throw new Error(`Operation "${name}" not found`)
-    }
+  get(key: string) {
+    const op = this.operations.get(key)
+    if (!op) throw new Error(`Unknown operation: ${key}`)
     return op
   }
 
   getAll() {
-    return Array.from(this.registry.keys())
+    return Array.from(this.operations.values())
   }
 }
 

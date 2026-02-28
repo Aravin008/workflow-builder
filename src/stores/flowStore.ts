@@ -4,6 +4,7 @@ import { type Edge, type Node, } from '@vue-flow/core';
 import { ConditionNode, FlowExport, NodeType, TransformNode, TypeNode, FlowSnapshot } from '@/types/nodes';
 import { useAlertStore } from './alertStore';
 import { hasCycle } from '@/utils/graph';
+import { nodeRegistry } from '@/workflow/core/node-registry';
 
 const VERSION = '2.4'
 export const useFlowStore = defineStore('flow', () => {
@@ -50,19 +51,38 @@ export const useFlowStore = defineStore('flow', () => {
     }
   }
 
-  function createNodeData(type: TypeNode, label: string): NodeType {
-    switch (type) {
-      case 'start':
-        return createStartNode(label)
+  // function createNodeData(type: TypeNode, label: string): NodeType {
+  //   switch (type) {
+  //     case 'start':
+  //       return createStartNode(label)
 
-      case 'transform':
-        return createTransformNode(label)
+  //     case 'transform':
+  //       return createTransformNode(label)
 
-      case 'condition':
-        return createConditionNode(label)
+  //     case 'condition':
+  //       return createConditionNode(label)
 
-      case 'end':
-        return createEndNode(label)
+  //     case 'end':
+  //       return createEndNode(label)
+  //   }
+  // }
+  function createNode(type: string) {
+    const def = nodeRegistry.get(type)
+
+    const defaultData = {}
+
+    def.configSchema.forEach(field => {
+      if (field.default !== undefined) {
+        defaultData[field.key] = field.default
+      }
+    })
+
+    return {
+      id: uuid(),
+      data: {
+        type,
+        ...defaultData
+      }
     }
   }
 
@@ -71,23 +91,55 @@ export const useFlowStore = defineStore('flow', () => {
   }
   
 
-  function addNode(type: TypeNode, label: string, position: { x: number; y: number }) {
-    if (type === 'start' && !canAddStartNode()) {
+  // function addNode(type: TypeNode, label: string, position: { x: number; y: number }) {
+  //   if (type === 'start' && !canAddStartNode()) {
+  //     alert.show('Only one Start node allowed')
+  //     return
+  //   }
+
+  //   pushHistory()
+  //   const nodeData = createNodeData(type, label)
+
+  //   const baseNode: Node = {
+  //     id: crypto.randomUUID(),
+  //     type, 
+  //     position: position?? {
+  //       x: 250,
+  //       y: 100
+  //     },
+  //     data: nodeData,
+  //   }
+
+  //   nodes.value.push(baseNode)
+  // }
+
+  function addNode(type: string, position: { x: number; y: number }) {
+    const def = nodeRegistry.get(type)
+
+    if (def.isEntry && !canAddStartNode()) {
       alert.show('Only one Start node allowed')
       return
     }
 
     pushHistory()
-    const nodeData = createNodeData(type, label)
+
+    const defaultData: Record<string, any> = {}
+
+    def.configSchema.forEach(field => {
+      if (field.default !== undefined) {
+        defaultData[field.key] = field.default
+      }
+    })
 
     const baseNode: Node = {
       id: crypto.randomUUID(),
-      type, 
-      position: position?? {
-        x: 250,
-        y: 100
-      },
-      data: nodeData,
+      type,
+      position: position ?? { x: 250, y: 100 },
+      data: {
+        type,
+        label: def.label,
+        ...defaultData
+      }
     }
 
     nodes.value.push(baseNode)

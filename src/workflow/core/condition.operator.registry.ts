@@ -1,16 +1,22 @@
-export type ConditionOperator = (
-  left: any,
-  right: any
-) => boolean
+// export type ConditionOperator = (
+//   left: any,
+//   right: any
+// ) => boolean
+
+export interface OperatorDefinition {
+  key: string
+  label: string
+  handler: (left: any, right?: any) => boolean
+}
 
 class OperatorRegistry {
-  private registry = new Map<string, ConditionOperator>()
+  private registry = new Map<string, OperatorDefinition>()
 
-  register(name: string, handler: ConditionOperator) {
-    this.registry.set(name, handler)
+  register(op:OperatorDefinition) {
+    this.registry.set(op.key, op)
   }
 
-  get(name: string): ConditionOperator {
+  get(name: string): OperatorDefinition {
     const op = this.registry.get(name)
     if (!op) {
       throw new Error(`Operator "${name}" not found`)
@@ -19,7 +25,7 @@ class OperatorRegistry {
   }
 
   getAll() {
-    return Array.from(this.registry.keys())
+    return Array.from(this.registry.values())
   }
 }
 

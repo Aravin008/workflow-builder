@@ -1,3 +1,4 @@
+import { operationRegistry } from "@/workflow/core/operation-registry"
 import { NodeDefinition } from "../../core/types"
 import { transformNodeHandler } from "./transform.handler"
 
@@ -8,22 +9,25 @@ export const transformNodeDefinition: NodeDefinition = {
 
   configSchema: [
     {
-      key: "field",
-      label: "Field",
-      type: "string",
+      key: 'field',
+      label: 'Field Name',
+      type: 'string',
       required: true
     },
     {
-      key: "operation",
-      label: "Operation",
-      type: "select",
+      key: 'operation',
+      label: 'Operation',
+      type: 'select',
       required: true,
-      options: []   // 👈 we’ll inject dynamically
+      options:  operationRegistry.getAll().map(op => ({
+      label: op.label,
+      value: op.key
+    }))
     },
     {
-      key: "value",
-      label: "Value",
-      type: "string"
+      key: 'value',
+      label: 'Value',
+      type: 'string'
     }
   ],
 

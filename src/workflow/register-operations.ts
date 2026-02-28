@@ -1,23 +1,38 @@
 import { operationRegistry } from "./core/operation-registry"
 
 export function registerCoreOperations() {
-  operationRegistry.register("uppercase", (current) =>
-    String(current).toUpperCase()
-  )
+  operationRegistry.register({
+    key: "uppercase",
+    label: "Uppercase",
+    handler: (current) =>
+      String(current).toUpperCase()
+  })
 
-  operationRegistry.register("append", (current, value) =>
-    String(current) + String(value ?? "")
-  )
+  operationRegistry.register({
+    key: "append",
+    label: "Append",
+    handler: (current, value) =>
+      String(current) + String(value ?? "")
+  })
 
-  operationRegistry.register("prepend", (current, value) =>
-    String(value ?? "") + String(current)
-  )
+  operationRegistry.register({
+    key: "prepend",
+    label: "Prepend",
+    handler: (current, value) =>
+      String(value ?? "") + String(current)
+  })
 
-  operationRegistry.register("add", (current, value) =>
-    Number(current) + Number(value ?? 0)
-  )
+  operationRegistry.register({
+    key: "add",
+    label: "Add",
+    handler: (current, value) =>
+      Number(current) + Number(value ?? 0)
+  })
 
-  operationRegistry.register("multiply", (current, value) =>
-    Number(current) * Number(value ?? 1)
-  )
+  operationRegistry.register({
+    key: "multiply",
+    label: "Multiply",
+    handler: (current, value) =>
+      Number(current) * Number(value ?? 1)
+  })
 }

@@ -18,7 +18,7 @@ export const transformNodeHandler: NodeHandler = async (
   }
 
   const op = operationRegistry.get(operation)
-  newPayload[field] = op(newPayload[field], value)
+  newPayload[field] = op.handler(newPayload[field], value)
 
   return {
     payload: newPayload,
