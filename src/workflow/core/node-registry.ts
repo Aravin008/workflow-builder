@@ -5,7 +5,8 @@ class NodeRegistry {
 
   register(def: NodeDefinition) {
     if (this.registry.has(def.type)) {
-      throw new Error(`Node type "${def.type}" already registered`)
+      // throw new Error(`Node type "${def.type}" already registered`)
+      return
     }
     this.registry.set(def.type, def)
   }

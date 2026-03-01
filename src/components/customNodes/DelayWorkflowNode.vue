@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Handle, Position } from '@vue-flow/core'
+import type { NodeProps } from '@vue-flow/core'
 
 const props = defineProps<{
   data: {
@@ -11,13 +12,13 @@ const props = defineProps<{
 
 <template>
   <div
-    class="px-4 py-2 rounded border bg-blue-100 min-w-37.5 text-center"
+    class="px-4 py-2 rounded border bg-yellow-300 min-w-37.5 text-center"
     :class="[
       props.data.isActive && 'ring-2 ring-blue-500 bg-blue-100',
       props.data.isCompleted && 'bg-gray-200'
     ]"
   >
-    <strong>Transform</strong>
+    <strong>Delay</strong>
 
     <!-- Incoming -->
     <Handle

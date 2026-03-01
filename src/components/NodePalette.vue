@@ -2,8 +2,10 @@
 import { useFlowStore } from '@/stores/flowStore'
 import ExportFile from './ExportFile.vue';
 import ImportFile from './ImportFile.vue';
+import { nodeRegistry } from '@/workflow/core/node-registry';
 
 const flow = useFlowStore()
+const availableNodes = nodeRegistry.getAll();
 
 function onDragStart(event: DragEvent, type: string) {
   event.dataTransfer?.setData('application/vueflow', type)
@@ -16,36 +18,16 @@ function onDragStart(event: DragEvent, type: string) {
     <div class="p-4 space-y-2">
       <h2 class="font-bold text-center">Nodes</h2>
 
-      <div class="border p-2 bg-green-100 cursor-pointer text-center rounded"
-          @click="flow.addNode('start',  null)"
-          draggable="true"
-          @dragstart="onDragStart($event, 'start')"
+      <div 
+        v-for="node in availableNodes"
+        :key="node.type"
+        @click="flow.addNode(node.type,  null)"
+        class="border p-2 cursor-pointer text-center rounded"
+        :class="node.color"
+        draggable="true"
+        @dragstart="onDragStart($event, node.type)"
       >
-        Start Node
-      </div>
-
-      <div class="border p-2 bg-blue-100 cursor-pointer text-center rounded"
-          @click="flow.addNode('transform', null)"
-          draggable="true"
-          @dragstart="onDragStart($event, 'transform')"
-      >
-        Transform Node
-      </div>
-
-      <div class="border p-2 bg-yellow-100 cursor-pointer text-center rounded"
-          @click="flow.addNode('condition', null)"
-          draggable="true"
-          @dragstart="onDragStart($event, 'condition')"
-      >
-        If / Else Node
-      </div>
-
-      <div class="border bg-red-100 p-2 cursor-pointer text-center rounded"
-          @click="flow.addNode('end', null)"
-          draggable="true"
-          @dragstart="onDragStart($event, 'end')"
-      >
-        End Node
+        {{ node.label }}
       </div>
     </div>
     <div class="py-2 px-4 space-y-2">

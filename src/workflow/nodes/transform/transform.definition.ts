@@ -1,11 +1,13 @@
 import { operationRegistry } from "@/workflow/core/operation-registry"
 import { NodeDefinition } from "../../core/types"
 import { transformNodeHandler } from "./transform.handler"
+import TransformNode from "@/components/customNodes/TransformNode.vue"
 
 export const transformNodeDefinition: NodeDefinition = {
   type: "transform",
   label: "Transform",
   category: "data",
+  color: "bg-blue-100",
 
   configSchema: [
     {
@@ -30,6 +32,8 @@ export const transformNodeDefinition: NodeDefinition = {
       type: 'string'
     }
   ],
-
+  ui: {
+    component: TransformNode
+  },
   handler: transformNodeHandler
 }

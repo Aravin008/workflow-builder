@@ -1,4 +1,5 @@
 import { Edge } from "@vue-flow/core"
+import { Component } from "vue"
 
 export type Payload = Record<string, any>
 
@@ -35,8 +36,12 @@ export interface NodeDefinition {
   type: string
   label: string
   category: string
+  color?: string
   isEntry?: boolean
   isTerminal?: boolean
   configSchema: ConfigField[]
+  ui?: {
+    component: Component
+  }
   handler: NodeHandler
 }

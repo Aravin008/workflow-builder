@@ -1,9 +1,22 @@
 <script setup lang="ts">
 import { Handle, Position } from '@vue-flow/core'
+
+const props = defineProps<{
+  data: {
+    isActive?: boolean
+    isCompleted?: boolean
+  }
+}>()
 </script>
 
 <template>
-  <div class="relative bg-yellow-100 border rounded p-2 min-w-37.5">
+  <div
+    class="relative bg-yellow-100 border rounded p-2 min-w-37.5"
+    :class="[
+      props.data.isActive && 'ring-2 ring-blue-500 bg-blue-100',
+      props.data.isCompleted && 'bg-gray-200'
+    ]"
+  >
     <div class="text-center pb-1"><strong>Condition</strong></div>
 
     <!-- Incoming -->
