@@ -2,27 +2,42 @@
 import { useVueFlow, VueFlow, MarkerType, Connection } from '@vue-flow/core'
 import { useFlowStore } from '@/stores/flowStore'
 import { Edge } from '@/types/workflow'
-import StartNode from '@/components/customNodes/StartNode.vue'
-import EndNode from '@/components/customNodes/EndNode.vue'
-import ConditionNode from '@/components/customNodes/ConditionNode.vue'
-import TransformNode from '@/components/customNodes/TransformNode.vue'
 import { useAlertStore } from '@/stores/alertStore'
-import { markRaw } from 'vue'
+import { computed, markRaw } from 'vue'
 import { MiniMap } from '@vue-flow/minimap'
 import { Controls } from '@vue-flow/controls'
 import { Background } from '@vue-flow/background'
 import { useUndoRedoHotkeys } from '@/utils/undoRedo'
+import { nodeRegistry } from '@/workflow/core/node-registry'
+import { useExectionStore } from '@/stores/executionStrore'
 
 useUndoRedoHotkeys()
 const flow = useFlowStore()
+const execution = useExectionStore()
 const { addEdges, project } = useVueFlow()
 const alert = useAlertStore()
-const nodeTypes = markRaw({
-  condition: ConditionNode,
-  start: StartNode,
-  end: EndNode,
-  transform: TransformNode
+// const nodeTypes = markRaw({
+//   condition: ConditionNode,
+//   start: StartNode,
+//   end: EndNode,
+//   transform: TransformNode
+// })
+
+
+const nodeTypes = computed(() => {
+  const types: Record<string, any> = {}
+
+  nodeRegistry.getAll().forEach(node => {
+    if (node?.ui?.component) {
+      types[node.type] = markRaw(node?.ui?.component)
+    }
+  })
+
+  return types
 })
+
+
+
 function onConnect(connection: Connection) {
   const sourceNode = flow.nodes.find(n => n.id === connection.source)
   const targetNode = flow.nodes.find(n => n.id === connection.target)

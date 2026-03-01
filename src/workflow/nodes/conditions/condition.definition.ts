@@ -1,3 +1,4 @@
+import ConditionNode from "@/components/customNodes/ConditionNode.vue"
 import { NodeDefinition } from "../../core/types"
 import { conditionNodeHandler } from "./condition.handler"
 
@@ -5,6 +6,7 @@ export const conditionNodeDefinition: NodeDefinition = {
   type: "condition",
   label: "Condition",
   category: "logic",
+  color: "bg-yellow-100",
 
   configSchema: [
     {
@@ -27,6 +29,8 @@ export const conditionNodeDefinition: NodeDefinition = {
       required: true
     }
   ],
-
+  ui: {
+    component: ConditionNode
+  },
   handler: conditionNodeHandler
 }

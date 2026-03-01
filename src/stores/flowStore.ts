@@ -16,84 +16,10 @@ export const useFlowStore = defineStore('flow', () => {
   const undoStack = ref<FlowSnapshot[]>([]) // Max 10 size
   const redoStack = ref<FlowSnapshot[]>([])
 
-  function createStartNode(label: string) {
-    return {
-      type: 'start' as const,
-      label,
-      payload: '{ "message": "hello", "count": 0 }',
-    }
-  }
-
-  function createTransformNode(label: string): TransformNode {
-    return {
-      type: 'transform' as const,
-      label,
-      field: 'message',
-      operation: 'uppercase',
-      value: '',
-    }
-  }
-
-  function createConditionNode(label: string): ConditionNode {
-    return {
-      type: 'condition' as const,
-      label,
-      field: 'message',
-      operator: 'equals',
-      value: '',
-    }
-  }
-
-  function createEndNode(label: string) {
-    return {
-      type: 'end' as const,
-      label,
-    }
-  }
-
-  // function createNodeData(type: TypeNode, label: string): NodeType {
-  //   switch (type) {
-  //     case 'start':
-  //       return createStartNode(label)
-
-  //     case 'transform':
-  //       return createTransformNode(label)
-
-  //     case 'condition':
-  //       return createConditionNode(label)
-
-  //     case 'end':
-  //       return createEndNode(label)
-  //   }
-  // }
-
   function canAddStartNode() {
     return !nodes.value.some(n => n.data.type === 'start')
   }
   
-
-  // function addNode(type: TypeNode, label: string, position: { x: number; y: number }) {
-  //   if (type === 'start' && !canAddStartNode()) {
-  //     alert.show('Only one Start node allowed')
-  //     return
-  //   }
-
-  //   pushHistory()
-  //   const nodeData = createNodeData(type, label)
-
-  //   const baseNode: Node = {
-  //     id: crypto.randomUUID(),
-  //     type, 
-  //     position: position?? {
-  //       x: 250,
-  //       y: 100
-  //     },
-  //     data: nodeData,
-  //   }
-
-  //   nodes.value.push(baseNode)
-  // }
-
   function addNode(type: string, position: { x: number; y: number }) {
     const def = nodeRegistry.get(type)
 
