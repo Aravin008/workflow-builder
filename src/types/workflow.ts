@@ -25,3 +25,10 @@ export type LogEntry = {
   type: 'start' | 'transform' | 'condition' | 'end' | 'error'
   payload: any
 }
+
+export type ExecutionHooks = {
+  onNodeStart?: (nodeId: string) => void
+  onNodeComplete?: (nodeId: string, payload: any) => void
+  onLog?: (log: LogEntry) => void
+  onError?: (error: string) => void
+}

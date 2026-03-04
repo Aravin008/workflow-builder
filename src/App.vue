@@ -6,7 +6,9 @@ import FlowCanvas from './components/FlowCanvas.vue';
 import { useFlowStore } from './stores/flowStore';
 import ExecutePanel from './components/ExecutePanel.vue';
 import AppAlert from '@/components/AppAlert.vue'
+import { initializeWorkflowSystem } from './workflow/bootstrap';
 
+initializeWorkflowSystem()
 const flow = useFlowStore()
 </script>
 

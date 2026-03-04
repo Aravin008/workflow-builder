@@ -4,9 +4,16 @@ A highly interactive, node-based workflow automation tool built with **Vue 3**, 
 
 **🔗 [Live Demo Hosted on GitHub Pages](https://aravin008.github.io/workflow-builder/)**
 
-**🔗 [Architecture](https://github.com/Aravin008/workflow-builder/blob/main/architecture.md)**
-
 ---
+
+## Architecture
+- This project uses a layered architecture with a registry-driven execution model.
+- UI and state management are handled with Vue 3 and Pinia
+- Workflow execution runs in a framework-agnostic TypeScript engine
+- Node types are self-describing and registered via a centralized Node Registry
+
+For detailed architectural documentation, see **🔗 [Architecture](https://github.com/Aravin008/workflow-builder/blob/main/architecture.md)**.
+
 
 ## Tech Stack
 
@@ -59,8 +66,6 @@ _Note: This script automatically builds the project and pushes the  `dist`  fold
 ----------
 
 ## 📁 Project Structure
-
-## Project Structure
 
 ```text
 src/

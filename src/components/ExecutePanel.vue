@@ -1,37 +1,42 @@
 <script setup lang="ts">
   import { ref } from 'vue'
   import { useFlowStore } from '@/stores/flowStore'
-  import type { LogEntry } from '@/types/workflow'
-  import { runWorkflow as flowEngine } from '@/engine/flowEngine'
+  import type { ExecutionHooks, LogEntry } from '@/types/workflow'
+  // import { runWorkflow as flowEngine } from '@/engine/flowEngine'
+  import { runWorkflow as flowEngine } from '@/workflow/core/engine/flowEngine_v3';
+  import { useAlertStore } from "@/stores/alertStore"
+import { useExectionStore } from '@/stores/executionStrore';
 
   // Use store
   const flow = useFlowStore()
-
+  const alert = useAlertStore()
   const running = ref(false)
   const logs = ref<LogEntry[]>([])
+  const executionStore = useExectionStore()
 
-  function runWorkflow() {
-    if (running.value) return
+  async function runWorkflow() {
+    if (executionStore.isRunning) return
 
     if (!flow.validateBeforeExecute()) return
 
     clearLogs()
     running.value = true
-    logs.value = []
+    executionStore.start()
+    // logs.value = []
 
     // Run engine
-    const { logs: runLogs, errors } = flowEngine({
+    const { logs: runLogs, errors } = await flowEngine({ 
       nodes: flow.nodes,
       edges: flow.edges
+    }, {
+      onLog: executionStore.addLog,
+      onNodeStart: executionStore.setActive,
+      onNodeComplete: executionStore.markCompleted,
+      onError: executionStore.addError
     })
 
-    if (errors.length > 0) {
-      logs.value.push({ nodeId: 'ERROR', type: 'error', payload: errors.join('; ') })
-    }
-
-    logs.value.push(...runLogs)
-
     running.value = false
+    executionStore.stop()
 
   }
 
@@ -71,7 +76,7 @@
     </button>
     <button
       class="bg-gray-600 text-white px-4 py-2 cursor-pointer min-w-32 rounded hover:bg-gray-700 mb-4 font-semibold text-sm"
-      @click="clearLogs"
+      @click="executionStore.clearLogs()"
       :disabled="running"
     >
       {{ running ? 'Running...' : 'Clear' }}
@@ -79,7 +84,7 @@
     </div>
 
     <div class="flex-1 overflow-auto border p-2 rounded bg-white">
-      <template v-if="logs.length === 0">
+      <template v-if="executionStore.logs.length === 0">
         <p class="text-gray-400 text-sm">Execution logs will appear here...</p>
       </template>
 
@@ -92,7 +97,7 @@
 
       <ul v-else class="space-y-3 text-sm font-mono">
         <li
-          v-for="(log, idx) in logs"
+          v-for="(log, idx) in executionStore.logs"
           :key="idx"
           class="border rounded p-2"
           :class="logClass(log.type)"
